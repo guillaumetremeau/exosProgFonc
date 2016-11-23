@@ -78,6 +78,17 @@ LA;
 (renverse '(1 2 3))
 (miroir '((1 2) ((4 3) 4)))
 
+
+
+;;miroir rt
+(define (miroirrt L)
+  (if (null? L)
+      ()
+      (miroir (cdr L
+
+
+
+
 ;;7
 (define carre_l(lambda (L)
                (if (null? L)
@@ -90,4 +101,91 @@ LA;
                              (carre_l (car L)))))))
 (carre_l (1 2 3))
                              
-                       
+;;mapkar
+
+(define (mapkar f L)
+  (if (null? L)
+      ()
+      (cons (f (car L))
+            (mapkar f (cdr L)))))
+
+(mapkar carre '(1 3 5 3 12))
+
+(mapkar (lambda (x)(+ x 1)) '(1 5 6))
+
+
+;; fibo
+(define (fibo n)
+  (if (or (= n 0) (= n 1))
+      1
+      (+ (fibo (- n 1)) (fibo (- n 2)))))
+
+(fibo 5)
+(fibo 10)
+(fibo 20)
+
+(define (fibol L)
+  (if (= n 0)
+      '(1 0)
+      (let (res (fibol (- n 1)
+  (const
+   (+ (car L) (car (cdr L)))
+   L))
+(define (fibo2 n)
+  (if (= n 0)
+      '(1 0)
+      (fibo1
+
+(define (fibort n a b)
+  (if (= n 0)
+      b
+      (fibort (- n 1) (+ a b) a)))
+(define (fibo4 n)
+  (fibort n 1 0))
+
+(fibo4 100000)
+
+;; niv0
+(define (niv0 L)
+  (cond ((null? L) ())
+        ((list? (car L))
+         (append (niv0 (car L))
+                 (niv0 (cdr L)))
+         (else (cons (car L)
+                     (niv0 (cdr L)))))))
+
+(niv0 '(1 (23 3) (4 (5 6)) 2))
+
+
+;; tri_inser
+(define (inserer x L)
+  (if (null? L)
+      (list x)
+      (if (> x (car L))
+          (cons (car L)
+                (inserer x (cdr L)))
+          (cons x L))))
+(define (tri_ins L)
+  (if (null? L)
+      ()
+      (inserer (car L)
+               (tri_ins (cdr L)))))
+(tri_ins '(2 86 5 4 12 33 5))
+
+
+(define (inserer_nom x L)
+  (if (null? L)
+      (list x)
+      (if (string>? (car x) (car (car L)))
+          (cons (car L)
+                (inserer_nom x (cdr L)))
+          (cons x L))))
+(define (tri_nom L)
+  (if (null? L)
+      ()
+      (inserer_nom (car L)
+                   (tri_nom(cdr L)))))
+(tri_nom '((paul 150 60)
+           (eric 170 50)
+           (fabien 160 80)
+           (jack 175 95)))
