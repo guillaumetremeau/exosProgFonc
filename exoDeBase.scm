@@ -189,3 +189,81 @@ LA;
            (eric 170 50)
            (fabien 160 80)
            (jack 175 95)))
+
+(define Selection (lambda (P L)
+                    (if (null? L) #t
+                        (and (P (car L))
+                             (Selection P (cdr L)))
+                        )))
+(Selection integer? '(1 3 5 ))
+
+(define (comp f g)
+  (lambda (x)
+    (f (g x))))
+((comp fibo4 carre) 5)
+
+(define (derive f)
+  (lambda (h)
+    (lambda (x)
+      (/
+       (-
+        (f (+ x h))
+        (f (- x h))
+        (* 2 h))))))
+(((derive carre) 0.1) 2)
+
+(define (zip L1 L2)
+  (map list L1 L2))
+(zip '(1 5 3.2) '(2 4 7))
+
+;Exercice 6
+(define (trace M)
+  (if (null? M)
+      0
+      (+
+       (caar M)
+       (trace (map cdr (cdr M)))
+       )))
+
+(trace '((1 2 3) (2 1 2) (3 2 1)))
+
+(define (transp M)
+  (if (null? (car M))
+      ()
+      (cons
+       (map car M)
+       (transp (map cdr M))
+       )))
+(transp '((11 21 31) (12 22 32) (13 23 33)))
+
+(define (transp2 M)
+  (apply map list M))
+
+(transp2 '((1 2 3)(4 5 6)(7 8 9)))
+
+(define (MV M V)
+  (if (null?  M)
+      ()
+      (cons
+       (apply + (map * (car M) V))
+       (MV (cdr M) V))))
+
+(MV '((1 2 3)(3 1 2)(2 3 1)) '(1 2 3))
+
+(define (AL M)
+  (lambda (V) (MV M V)))
+
+((AL '((1 2 3)(4 5 6)(7 8 9))) '(1 1 1))
+
+
+;Exercice 8
+(define (P E)
+  (if (null? E)
+      '(())
+      (append (P (cdr E))
+            (map (lambda (x) (cons (car E) x)) (P (cdr E))))))
+
+(P '(1 2 3))
+
+;Exercice 4
+(defin
