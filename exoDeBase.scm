@@ -44,7 +44,7 @@ LA;
                    (* n (fact_r(- n 1))))))
 (fact 2);
 
-;;4
+;;;4
 (define som_int(lambda(n)
                  (if (and (> n 0) (integer? n))
                      (som_int_r n)
@@ -55,14 +55,14 @@ LA;
                     (+ n (som_int_r(- n 1))))))
 (som_int 10)
 
-;;5
+;;;5
 (define long(lambda(L)
               (if (null? L)
                   0
                   (+ 1 (long(cdr L))))))
 (long '(1 4 7 1 (1 2 3 4)))
 
-;;6
+;;;6
 (define renverse(lambda(L)
                   (if (null? L)
                       ()
@@ -80,7 +80,7 @@ LA;
 
 
 
-;;miroir rt
+;;;miroir rt
 (define (miroirrt L)
   (if (null? L)
       ()
@@ -89,7 +89,7 @@ LA;
 
 
 
-;;7
+;;;7
 (define carre_l(lambda (L)
                (if (null? L)
                    ()
@@ -101,7 +101,7 @@ LA;
                              (carre_l (car L)))))))
 (carre_l (1 2 3))
                              
-;;mapkar
+;;;mapkar
 
 (define (mapkar f L)
   (if (null? L)
@@ -114,7 +114,7 @@ LA;
 (mapkar (lambda (x)(+ x 1)) '(1 5 6))
 
 
-;; fibo
+;;; fibo
 (define (fibo n)
   (if (or (= n 0) (= n 1))
       1
@@ -157,7 +157,7 @@ LA;
 (niv0 '(1 (23 3) (4 (5 6)) 2))
 
 
-;; tri_inser
+;;; tri_inser
 (define (inserer x L)
   (if (null? L)
       (list x)
@@ -216,7 +216,7 @@ LA;
   (map list L1 L2))
 (zip '(1 5 3.2) '(2 4 7))
 
-;Exercice 6
+;;;Exercice 6
 (define (trace M)
   (if (null? M)
       0
@@ -256,7 +256,7 @@ LA;
 ((AL '((1 2 3)(4 5 6)(7 8 9))) '(1 1 1))
 
 
-;Exercice 8
+;;;Exercice 8
 (define (P E)
   (if (null? E)
       '(())
@@ -265,5 +265,112 @@ LA;
 
 (P '(1 2 3))
 
-;Exercice 4
-(defin
+;;;Exercice 4
+(map list '(0 1))
+
+(define (addFirst E1 E2)
+  (if (null? E1)
+  ()
+  (append (map (lambda (x) (cons (car E1) x)) E2) (addFirst (cdr E1) E2))))
+(addFirst '(0 1) '((0) (1)))
+(define (PC E n)
+  (if (= 0 n)
+      '(())
+      (addFirst E (PC E (- n 1)))))
+(PC '(0 1) 3)
+
+;;;Exercice 1
+(define (quel-que-soit? L P)
+  (if (null? L) #t
+      (and (P (car L))
+           (quel-que-soit? (cdr L) P))))
+(quel-que-soit? '(1 5 6 4) integer?)
+
+(define (existe? L P)
+  (if (null? L) #f
+      (or (P (car L))
+          (existe? (cdr L) P))))
+(existe? '(1.1 1.5) integer?)
+
+(define (tous-egaux-u? L)
+  (quel-que-soit? L (lambda (x) (= (car L) x))))
+(tous-egaux-u? '(1 1 1))
+
+(define (tous-egaux-e? L)
+  (not (existe?  L (lambda (x) (not (= (car L) x))))))
+(tous-egaux-e? '(1 1 0))
+(tous-egaux-e? '())
+
+(define (tous-diff-u? L)
+  (if (or (null? L)(null? (cdr L))) #t
+      (and (quel-que-soit? (cdr L) (lambda (x) (not (= (car L) x))))
+       (tous-diff-u? (cdr L)))))
+(tous-diff-u? '(1 2 2 3))
+
+;;;Exerice 2
+
+(define (rec f n B)
+  (if (= 0 n)
+      B
+      (f (rec f n-1 B) n)))
+
+;;;Exercice 10
+;;Question 1
+  ;;a)
+(define fct
+  (lambda (d a)
+    (lambda (x)
+      (annexe d a x))))
+
+(define (annexe d a x)
+  (if (equal? x (car d))
+      (car a)
+      (annexe (cdr d) (cdr a) x)))
+(annexe '(a b c) '(1 2 3) 'a)
+((fct '(a b c) '(1 2 3)) 'a)
+
+  ;;b)
+(define (LF E F)
+  (map (lambda (z) (fct E z)) (PC F (long E))))
+
+;;Question 2
+  ;;a)
+(define (SR L B C)
+  (if (null? L)
+      B
+      (C (car L) (SR (cdr L) B C))))
+(define (filtrer E P)
+  (SR E () (lambda (x y) (if (P x) (cons x y) y))))
+(filtrer '(1 a 2 b) integer?)
+
+  ;;b)
+(define (qqs? L P)
+  (if (null? L)
+      #t
+      (and (P (car L)) (qqs? (cdr L) P))))
+(define (stabilise? f P)
+  (qqs? P (lambda (x) (member (f x) P))))
+(stabilise? (lambda (x) (- 1 x)) '(0 1))
+(stabilise? (lambda (x) (- 1 x)) '(0 1 2))
+
+(define (LFS E P)
+  (filtrer (LF E E) (lambda (x) (stabilise? x P))))
+(map (lambda (app) (map (lambda (X) (app X)) '(0 1 2))) (LFS '(0 1 2) '(0 1)))
+      
+;;;Exercice 5
+(define (chemins deb but G)
+  (parcours deb but '() G))
+(define (noeud s G)
+  (if (= s (car (car G)))
+      (car G)
+      (noeud s (cdr G))))
+(define (suivant noeud)
+  (cdr noeud))
+(define (parcours deb but dp G)
+  (addFirst deb (append-map (lambda (x) (parcours x but (cons x dp) G))
+                            (filtrer (suivant (noeud deb G)) (lambda (x) (not (member x dp)))))))
+(addFirst '(d) '((a b) () (c)))
+
+     
+
+(chemins '(A) '(B) '((A (B C)) (C (B)) (B (A))))
